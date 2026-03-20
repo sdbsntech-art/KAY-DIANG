@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kay-Diang — Apprends l'Arabe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+
+<div class="stars-bg" id="starsBg"></div>
+
+<div class="auth-page" id="authPage">
+  <div class="auth-logo-zone">
+    <div class="logo-emblem">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <polygon points="40,4 76,62 4,62" stroke="#D4A843" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+        <line x1="40" y1="4" x2="40" y2="62" stroke="#D4A843" stroke-width="3" stroke-linecap="round"/>
+        <line x1="22" y1="34" x2="58" y2="34" stroke="#D4A843" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="40" cy="4"  r="4" fill="#D4A843"/>
+        <circle cx="40" cy="62" r="4" fill="#D4A843"/>
+        <circle cx="4"  cy="62" r="4" fill="#C0392B" opacity=".7"/>
+        <circle cx="76" cy="62" r="4" fill="#C0392B" opacity=".7"/>
+      </svg>
+    </div>
+    <h1 class="site-name">Kay-Diang</h1>
+    <p class="site-tagline">كَي دِيَانْج — Apprends l'arabe avec courage</p>
+  </div>
+
+  <div class="auth-card" id="authCard">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Connexion</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">S'inscrire</button>
+    </div>
+
+    <div id="formLogin">
+      <div class="field-wrap">
+        <label>Identifiant</label>
+        <input type="text" id="loginUser" placeholder="Votre nom ou email">
+      </div>
+      <div class="field-wrap">
+        <label>Mot de passe</label>
+        <div class="pw-wrap">
+          <input type="password" id="loginPw" placeholder="••••••••">
+          <button class="pw-eye" onclick="togglePw('loginPw',this)">👁</button>
+        </div>
+      </div>
+      <div class="auth-error" id="loginError"></div>
+      <button class="btn-auth" onclick="login()">Se connecter →</button>
+    </div>
+
+    <div id="formRegister" hidden>
+      <div class="field-wrap">
+        <label>Prénom</label>
+        <input type="text" id="regName" placeholder="Votre prénom">
+      </div>
+      <div class="field-wrap">
+        <label>Nom d'utilisateur</label>
+        <input type="text" id="regUser" placeholder="Unique, sans espaces">
+      </div>
+      <div class="field-wrap">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="votre@email.com">
+      </div>
+      <div class="field-wrap">
+        <label>Mot de passe</label>
+        <div class="pw-wrap">
+          <input type="password" id="regPw" placeholder="Min. 6 caractères">
+          <button class="pw-eye" onclick="togglePw('regPw',this)">👁</button>
+        </div>
+      </div>
+      <div class="strength-bar"><div id="strengthFill"></div></div>
+      <div class="auth-error" id="regError"></div>
+      <button class="btn-auth" onclick="register()">Créer mon compte →</button>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="appPage" hidden>
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      <svg width="28" height="28" viewBox="0 0 80 80" fill="none">
+        <polygon points="40,4 76,62 4,62" stroke="#D4A843" stroke-width="4" fill="none" stroke-linejoin="round"/>
+        <line x1="40" y1="4" x2="40" y2="62" stroke="#D4A843" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="22" y1="34" x2="58" y2="34" stroke="#D4A843" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+      <span>Kay-Diang</span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#" class="nav-link active" onclick="showSection('dashboard')">🏠 Accueil</a>
+      <a href="#" class="nav-link" onclick="showSection('lessons')">📖 Leçons</a>
+      <a href="#" class="nav-link" onclick="showSection('vocabulary')">📝 Vocabulaire</a>
+      <a href="#" class="nav-link" onclick="showSection('grammar')">⚖️ Grammaire</a>
+      <a href="#" class="nav-link" onclick="showSection('hadith')">🌙 Hadiths</a>
+      <a href="#" class="nav-link" onclick="showSection('tests')">🎯 Tests</a>
+      <a href="#" class="nav-link admin-link" id="adminNavLink" onclick="showSection('admin')" style="display:none">⚙️ Admin</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-theme" onclick="toggleTheme()" title="Changer le thème">☀️</button>
+      <div class="nav-avatar" id="navAvatar" onclick="toggleUserMenu()">
+        <span id="avatarInitial">?</span>
+        <div class="user-menu" id="userMenu" hidden>
+          <div class="um-name" id="umName"></div>
+          <div class="um-level" id="umLevel"></div>
+          <hr>
+          <button onclick="showSection('profile')">Mon profil</button>
+          <button onclick="logout()">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ── DASHBOARD ───────────────────────────────────────────────── -->
+    <section id="sec-dashboard" class="section active">
+      <div class="dashboard-hero">
+        <div class="dh-text">
+          <h2 id="welcomeMsg">أَهْلاً وَسَهْلاً</h2>
+          <p class="dh-sub">Bienvenue sur Kay-Diang. Que veux-tu apprendre aujourd'hui ?</p>
+        </div>
+        <div class="dh-arabic">بِسْمِ اللهِ</div>
+      </div>
+
+      <div class="progress-overview">
+        <div class="prog-card">
+          <div class="prog-label">Niveau actuel</div>
+          <div class="prog-value" id="dashLevel">Débutant</div>
+          <div class="prog-bar"><div class="prog-fill" id="dashProgBar" style="width:0%"></div></div>
+          <div class="prog-xp" id="dashXP">0 / 100 XP</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-label">Leçons complétées</div>
+          <div class="prog-value" id="dashLessons">0</div>
+          <div class="prog-icon">📖</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-label">Mots appris</div>
+          <div class="prog-value" id="dashWords">0</div>
+          <div class="prog-icon">📝</div>
+        </div>
+        <div class="prog-card">
+          <div class="prog-label">Score moyen</div>
+          <div class="prog-value" id="dashScore">—</div>
+          <div class="prog-icon">🎯</div>
+        </div>
+      </div>
+
+      <h3 class="sec-title">Continuer l'apprentissage</h3>
+      <div class="lesson-grid" id="quickLessons"></div>
+
+      <div class="hadith-widget" id="dashHadith">
+        <div class="hw-badge">🌙 Hadith du Jour</div>
+        <div class="hw-arabic" id="hwArabic"></div>
+        <div class="hw-text" id="hwText"></div>
+        <div class="hw-source" id="hwSource"></div>
+      </div>
+    </section>
+
+    <!-- ── LEÇONS ──────────────────────────────────────────────────── -->
+    <section id="sec-lessons" class="section">
+      <div class="sec-header">
+        <h2>📖 Toutes les Leçons</h2>
+        <p>Du niveau débutant jusqu'à expert — progressez à votre rythme</p>
+      </div>
+
+      <div class="level-tabs">
+        <button class="lvl-tab active" onclick="filterLessons('all')">Tout</button>
+        <button class="lvl-tab" onclick="filterLessons('debutant')">🌱 Débutant</button>
+        <button class="lvl-tab" onclick="filterLessons('elementaire')">📗 Élémentaire</button>
+        <button class="lvl-tab" onclick="filterLessons('intermediaire')">📘 Intermédiaire</button>
+        <button class="lvl-tab" onclick="filterLessons('avance')">📙 Avancé</button>
+        <button class="lvl-tab" onclick="filterLessons('expert')">⭐ Expert</button>
+      </div>
+
+      <div class="lesson-grid full-grid" id="allLessonsGrid"></div>
+    </section>
+
+    <!-- ── VOCABULAIRE ─────────────────────────────────────────────── -->
+    <section id="sec-vocabulary" class="section">
+      <div class="sec-header">
+        <h2>📝 Vocabulaire Arabe</h2>
+        <p>Apprenez les mots essentiels avec traduction et prononciation</p>
+      </div>
+
+      <div class="vocab-search-bar">
+        <input type="text" id="vocabSearch" placeholder="🔍 Rechercher un mot..." oninput="filterVocab()">
+        <select id="vocabCat" onchange="filterVocab()">
+          <option value="">Toutes catégories</option>
+          <option>Salutations</option>
+          <option>Famille</option>
+          <option>Corps</option>
+          <option>Nourriture</option>
+          <option>Religion</option>
+          <option>Couleurs</option>
+          <option>Chiffres</option>
+          <option>Nature</option>
+          <option>Verbes</option>
+          <option>Adjectifs</option>
+        </select>
+      </div>
+
+      <div class="vocab-grid" id="vocabGrid"></div>
+    </section>
+
+    <!-- ── GRAMMAIRE ───────────────────────────────────────────────── -->
+    <section id="sec-grammar" class="section">
+      <div class="sec-header">
+        <h2>⚖️ Grammaire Arabe</h2>
+        <p>Maîtrisez la structure de la langue arabe</p>
+      </div>
+      <div class="grammar-grid" id="grammarGrid"></div>
+    </section>
+
+    <!-- ── HADITHS ─────────────────────────────────────────────────── -->
+    <section id="sec-hadith" class="section">
+      <div class="sec-header">
+        <h2>🌙 Hadiths & Histoire de la Langue</h2>
+        <p>Sagesse des Compagnons sur la langue arabe et son apprentissage</p>
+      </div>
+      <div class="hadith-list" id="hadithList"></div>
+    </section>
+
+    <!-- ── TESTS ───────────────────────────────────────────────────── -->
+    <section id="sec-tests" class="section">
+      <div class="sec-header">
+        <h2>🎯 Tests & Évaluations</h2>
+        <p>Testez vos connaissances et validez votre niveau</p>
+      </div>
+
+      <div id="testMenu" class="test-menu">
+        <div class="test-level-cards" id="testLevelCards"></div>
+      </div>
+
+      <div id="testRunner" hidden>
+        <div class="test-header-bar">
+          <div class="test-info">
+            <span id="testTitle">Test</span>
+            <span class="test-q-count" id="testQCount"></span>
+          </div>
+          <div class="test-timer" id="testTimer">⏱ 00:00</div>
+        </div>
+        <div class="test-progress-bar"><div id="testProgFill"></div></div>
+        <div class="question-card" id="questionCard"></div>
+        <div class="test-nav">
+          <button class="btn-test-nav" id="btnNext" onclick="nextQuestion()">Suivant →</button>
+        </div>
+      </div>
+
+      <div id="testResult" hidden>
+        <div class="result-card" id="resultCard"></div>
+      </div>
+    </section>
+
+    <!-- ── PROFIL ──────────────────────────────────────────────────── -->
+    <section id="sec-profile" class="section">
+      <div class="profile-card" id="profileCard"></div>
+    </section>
+
+    <!-- ── LEÇON ACTIVE ────────────────────────────────────────────── -->
+    <section id="sec-lesson-view" class="section">
+      <div id="lessonView"></div>
+    </section>
+
+    <!-- ── ADMIN ───────────────────────────────────────────────────── -->
+    <section id="sec-admin" class="section">
+      <div class="sec-header">
+        <h2>⚙️ Panneau Administrateur</h2>
+        <p>Gestion des utilisateurs et de la plateforme</p>
+      </div>
+      <div class="admin-tabs">
+        <button class="adm-tab active" onclick="adminTab('users')">👥 Utilisateurs</button>
+        <button class="adm-tab" onclick="adminTab('stats')">📊 Statistiques</button>
+      </div>
+      <div id="adminUsers">
+        <table class="admin-table" id="adminTable">
+          <thead>
+            <tr>
+              <th>Nom</th><th>Username</th><th>Email</th>
+              <th>Niveau</th><th>XP</th><th>Inscrit le</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminTbody"></tbody>
+        </table>
+      </div>
+      <div id="adminStats" hidden>
+        <div class="stats-grid" id="statsGrid"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="overlay" id="lessonModal" hidden>
+  <div class="modal-card" id="modalContent"></div>
+</div>
+
+<div class="toast-zone" id="toastZone"></div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script src="js/lessons.js"></script>
+<script src="js/tests.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
