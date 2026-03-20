@@ -11,9 +11,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="kay-diang/css/main.css">
-<style>[hidden] { display: none !important; }</style>
+<style>
+  [hidden] { display: none !important; }
+
+  /* --- CSS RESPONSIVE POUR MOBILE --- */
+  @media (max-width: 768px) {
+    /* Navigation : Menu défilant horizontalement */
+    .navbar { flex-direction: column; height: auto; padding: 10px; gap: 10px; }
+    .nav-brand { margin-bottom: 5px; }
+    .nav-links { width: 100%; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+    .nav-link { white-space: nowrap; font-size: 0.9rem; padding: 8px 12px; }
+    .nav-right { width: 100%; justify-content: flex-end; }
+
+    /* Auth & Dashboard */
+    .auth-card { width: 92%; padding: 20px; margin-top: 10vh; }
+    .dashboard-hero { flex-direction: column-reverse; text-align: center; padding: 20px; }
+    .dh-arabic { font-size: 3rem; margin-bottom: 15px; }
+    .progress-overview { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Grilles et Contenu */
+    .lesson-grid, .vocab-grid, .grammar-grid, .hadith-list, .test-level-cards { grid-template-columns: 1fr; }
+    .vocab-search-bar { flex-direction: column; gap: 10px; }
+    .vocab-search-bar input, .vocab-search-bar select { width: 100%; }
+    
+    /* Leçons et Modales */
+    .modal-card { width: 95%; max-height: 95vh; padding: 15px; }
+    .lesson-view { padding: 0; }
+    .forms-table th, .forms-table td { padding: 5px 2px; font-size: 0.8rem; }
+  }
+</style>
 </head>
 <body>
+
+<div id="globalProgressBar" hidden>
+  <div id="globalXpFill"></div>
+</div>
 
 <div class="stars-bg" id="starsBg"></div>
 
@@ -305,11 +337,10 @@
 
 <div class="toast-zone" id="toastZone"></div>
 
-<script src="kay-diang/js/admin.js"></script>
+<script src="kay-diang/js/data.js"></script>
 <script src="kay-diang/js/auth.js"></script>
+<script src="kay-diang/js/admin.js"></script>
 <script src="kay-diang/js/app.js"></script>
 <script src="kay-diang/js/tests.js"></script>
-<script src="kay-diang/js/lessons.js"></script>
-<script src="kay-diang/admin.js"></script>
 </body>
 </html>

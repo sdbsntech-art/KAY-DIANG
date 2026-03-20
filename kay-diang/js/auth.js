@@ -222,6 +222,7 @@ function register() {
 
 function logout() {
   Auth.logout();
+  document.getElementById('globalProgressBar').hidden = true;
   document.getElementById('appPage').hidden = true;
   document.getElementById('authPage').hidden = false;
   document.getElementById('loginUser').value = '';

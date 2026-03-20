@@ -1,10 +1,23 @@
 let currentUser = null;
 let currentTheme = localStorage.getItem('kd_theme') || 'dark';
+const MAX_TOTAL_XP = 2000; // XP for Expert level, based on level thresholds in auth.js
+
+function updateGlobalProgressBar() {
+  if (!currentUser) return;
+  const xp = currentUser.xp || 0;
+  const percent = Math.min(100, (xp / MAX_TOTAL_XP) * 100);
+  
+  const fill = document.getElementById('globalXpFill');
+  if (fill) {
+    fill.style.width = percent + '%';
+  }
+}
 
 function initApp(user) {
   currentUser = user;
   document.getElementById('authPage').hidden = true;
   document.getElementById('appPage').hidden = false;
+  document.getElementById('globalProgressBar').hidden = false;
   document.documentElement.setAttribute('data-theme', currentTheme);
   document.getElementById('btnTheme') && (document.getElementById('btnTheme').textContent = currentTheme === 'dark' ? '☀️' : '🌙');
   document.querySelector('.btn-theme').textContent = currentTheme === 'dark' ? '☀️' : '🌙';
@@ -18,6 +31,7 @@ function initApp(user) {
     document.getElementById('adminNavLink').style.display = '';
   }
 
+  updateGlobalProgressBar();
   loadDashboard();
   loadVocabulary();
   loadGrammar();
@@ -41,10 +55,15 @@ function showSection(id) {
   if (sec) sec.classList.add('active');
   const link = document.querySelector(`.nav-link[onclick*="${id}"]`);
   if (link) link.classList.add('active');
+
+  // Refresh user data on section change, as it might have been updated by tests etc.
+  currentUser = Auth.current();
+
   if (id === 'dashboard') loadDashboard();
   if (id === 'profile') loadProfile();
   if (id === 'admin') loadAdmin();
   if (id === 'tests') loadTests();
+  updateGlobalProgressBar();
 }
 
 function toggleUserMenu() {
@@ -67,8 +86,7 @@ function toast(msg, type = 'ok') {
 }
 
 function loadDashboard() {
-  currentUser = Auth.current();
-  if (!currentUser) return;
+  if (!currentUser) return; // currentUser is now set in showSection
 
   const levelName = KD.LEVEL_NAMES[KD.LEVELS[currentUser.level || 0]] || '🌱 Débutant';
   const maxXP = KD.LEVEL_XP[KD.LEVELS[currentUser.level]] || 100;
@@ -255,6 +273,7 @@ function completeLesson(id, xp) {
   document.getElementById('btnComplete').disabled = true;
   document.getElementById('btnComplete').textContent = '✅ Leçon complétée !';
   toast('🎉 Leçon complétée ! +' + xp + ' XP gagnés', 'ok');
+  updateGlobalProgressBar();
   loadAllLessons();
 }
 
@@ -321,8 +340,7 @@ function loadHadiths() {
 }
 
 function loadProfile() {
-  currentUser = Auth.current();
-  if (!currentUser) return;
+  if (!currentUser) return; // currentUser is now set in showSection
   const level = KD.LEVELS[currentUser.level || 0];
   const levelName = KD.LEVEL_NAMES[level] || '🌱 Débutant';
   const scores = currentUser.testScores || [];
