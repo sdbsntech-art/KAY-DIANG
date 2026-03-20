@@ -172,6 +172,10 @@ body {
 .nav-link:hover, .nav-link.active {
   background: rgba(212,168,67,.12); color: var(--gold);
 }
+.nav-burger {
+  display: none; background: none; border: none;
+  color: var(--text); font-size: 1.8rem; cursor: pointer;
+}
 .nav-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .btn-theme {
   width: 36px; height: 36px; background: var(--bg3);
@@ -540,10 +544,43 @@ body {
 }
 
 @media (max-width:768px) {
+  /* Navbar & Burger Menu */
+  .navbar { padding: 10px 20px; flex-wrap: wrap; }
+  .nav-burger { display: block; order: 1; margin-left: auto; margin-right: 12px; }
+  .nav-right { order: 2; margin-left: 0; }
+  
+  .nav-links {
+    display: none; width: 100%; flex-direction: column;
+    order: 3; margin-top: 15px; padding-top: 15px;
+    border-top: 1px solid var(--border);
+    animation: slideDown 0.3s ease;
+  }
+  .nav-links.active { display: flex; }
+  .nav-link { padding: 12px; width: 100%; text-align: center; background: var(--bg3); margin-bottom: 4px; }
+
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+
+  /* General Responsive Fixes */
   .progress-overview { grid-template-columns: 1fr 1fr; }
   .pc-stats { grid-template-columns: 1fr 1fr; }
-  .nav-links { display: none; }
   .qc-options { grid-template-columns: 1fr; }
   .lesson-grid { grid-template-columns: 1fr; }
   .admin-table { font-size: .78rem; }
+  
+  /* Auth & Dashboard */
+  .auth-card { width: 92%; padding: 20px; margin-top: 5vh; }
+  .dashboard-hero { flex-direction: column-reverse; text-align: center; padding: 20px; }
+  .dh-arabic { font-size: 3rem; margin-bottom: 15px; }
+
+  /* Grilles et Contenu */
+  .lesson-grid, .vocab-grid, .grammar-grid, .hadith-list, .test-level-cards { grid-template-columns: 1fr; }
+  .vocab-search-bar { flex-direction: column; gap: 10px; }
+  .vocab-search-bar input, .vocab-search-bar select { width: 100%; }
+  
+  /* Leçons et Modales */
+  .modal-card { width: 95%; max-height: 95vh; padding: 15px; }
+  .lesson-view { padding: 20px 15px; }
+  .forms-table-wrap { overflow-x: scroll; }
+  .forms-table th, .forms-table td { padding: 5px 2px; font-size: 0.8rem; min-width: 40px; }
+  .lv-word-ar { font-size: 1.4rem; min-width: 80px; }
 }

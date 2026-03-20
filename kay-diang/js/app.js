@@ -56,6 +56,9 @@ function showSection(id) {
   const link = document.querySelector(`.nav-link[onclick*="${id}"]`);
   if (link) link.classList.add('active');
 
+  // Fermer le menu mobile si ouvert
+  document.getElementById('navLinks').classList.remove('active');
+
   // Refresh user data on section change, as it might have been updated by tests etc.
   currentUser = Auth.current();
 
@@ -76,6 +79,10 @@ document.addEventListener('click', e => {
     if (m) m.hidden = true;
   }
 });
+
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
 
 function toast(msg, type = 'ok') {
   const t = document.createElement('div');
